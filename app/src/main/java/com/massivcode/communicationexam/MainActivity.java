@@ -9,13 +9,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, FragmentToActivityListener {
 
     private EditText mEditText;
     private TextView mTextView;
     private Button mSendButton;
 
     private FragmentExam mFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // 정적으로 레이아웃에 추가되어있는 프래그먼트는 아래와 같은 방법으로 얻어올 수 있습니다.
         mFragment = (FragmentExam) getSupportFragmentManager().findFragmentById(R.id.fragment);
+
+        // 프래그먼트로부터 데이터를 받을 때 사용하는 리스너를 세팅하기 위한 메소드
+        mFragment.setFragmentToActivityListener(this);
     }
+
+    /**
+     * 프래그먼트로부터 전달받은 데이터가 들어오는 콜백 메소드
+     * @param str
+     */
+    @Override
+    public void receivedData(String str) {
+        mTextView.append("프래그먼트 : " + str + "\n");
+    }
+
 
     @Override
     public void onClick(View v) {
